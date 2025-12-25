@@ -1,0 +1,116 @@
+/* Section wrapper */
+.product-section {
+  padding: 20px;
+  margin: 0;
+}
+
+.product-section h2 {
+  font-size: 35px;        /* bigger text */
+  font-weight: 700;       /* bold */
+  margin: 20px 0 10px 0;  /* space above and below */
+  color: #1c1c1c;         /* Blinkit-style dark grey */
+}
+
+
+/* Product list container (flex wrap inline display) */
+.product-list{
+  display: flex;
+  flex-wrap: wrap;     /* allow wrapping */
+  gap: 35px;
+  padding: 10px;
+  justify-content: flex-start;
+}
+
+
+.product {
+  margin-top: 20px; 
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 14px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  background: white;
+  flex-direction: column; /* <<< THIS puts details below image */
+  align-items: center;     /* centers content */
+  max-width: 225px;     /* adjust based on layout */
+  flex: 0 0 auto;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+/* Product image */
+.product img {
+  width: 200px;          /* control image size */
+  height: 200px;
+  object-fit: contain;  /* image remains clean, no stretching */
+  border-radius: 6px;
+}
+
+/* Content layout */
+.product-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Title */
+.product-title {
+  font-size: 25px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Weight */
+.product-weight {
+  font-size: 18px;
+  color: gray;
+  margin: 0;
+}
+
+/* Amount */
+.product-amount {
+  font-size: 20px;
+  font-weight: 600;
+  color: #00b14f;     /* Blinkit green */
+}
+
+/* buttons side by side */
+.product-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+/* favourite button */
+.product-favourite {
+  padding: 8px 12px;
+  background-color: yellowgreen;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.product-favourite:hover {
+  background-color: #e9e9e9;
+}
+
+/* cart button */
+.product-cart {
+  padding: 8px 14px;
+  background-color: #00b14f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.product-cart:hover {
+  background-color: #009d45;
+}

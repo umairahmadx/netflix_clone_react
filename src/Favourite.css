@@ -1,0 +1,67 @@
+/* Fav Page Wrapper */
+.fav-page {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fafafa;
+  box-sizing: border-box;
+}
+
+/* “Your Fav (x)” heading */
+.fav-page h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* Empty fav text */
+.fav-page p {
+  font-size: 18px;
+  color: #777;
+}
+
+/* Container holding all fav item cards */
+.fav-items-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Single item box */
+.fav-product {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 15px;
+  border: 1px solid #eaeaea;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Product Image */
+.fav-product img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* Product details */
+.fav-product h3 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.fav-product p {
+  color: #666;
+  margin: 4px 0;
+}
+
+.fav-product h4 {
+  font-size: 18px;
+  color: #00b14f;
+  font-weight: 700;
+  margin: 0;
+}

@@ -1,0 +1,58 @@
+/* Page wrapper */
+.home-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+  background-color: #fafafa;
+}
+
+/* Pale greenish info box */
+.info-box {
+  margin-top: 0;
+  width: 100%;
+  max-width: 1500px;
+  background-color: palegreen;   /* pale green */
+  padding: 28px;
+  border-radius: 14px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+  
+}
+
+/* Heading */
+.info-box h2 {
+  margin: 0;
+  font-size: 60px;
+  color: #1a5b1a;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Description */
+.info-box p {
+  font-size: 18px;
+  margin-top: 10px;
+  color: #333;
+  text-align: center;
+}
+
+/* Features list */
+.features {
+  margin-top: 18px;
+  margin-left: 350px;
+  display: flex;
+  gap: 150px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #0f6f0f;
+  
+}
+
+.home-container {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  background-color: #fafafa;
+  
+}
