@@ -1,86 +1,85 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from './Home'
-import Navbar from './Navbar.jsx'
-import ProductList from "./Productlist";
-import Favourite from './Favourite'
-import Cart from './Cart'
-import Login from './Login'
-import Addproduct from './Addproduct'
-import { useState, useEffect } from "react";
+
+import NetflixNavbar from "./NetflixNavbar";
+import Home from "./Home";
+import MyList from "./MyList";
+import Login from "./Login";
+import { fetchMyList } from "./api"; // 🔥 ADD THIS
 
 const App = () => {
-  const [cartCount, setCartCount] = useState(
-    parseInt(localStorage.getItem("cartCount")) || 0);
-  const [favCount, setFavCount] = useState(
-    parseInt(localStorage.getItem("favCount")) || 0);
-    
-  useEffect(() => {
-    localStorage.setItem("cartCount", cartCount);
-  }, [cartCount]);
-  useEffect(() => {
-    localStorage.setItem("favCount", favCount);
-  }, [favCount]);
+  // 🔐 AUTH STATE (SOURCE OF TRUTH)
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    !!localStorage.getItem("token")
+  );
 
-  const [cartItems, setCartItems] = useState(
-  JSON.parse(localStorage.getItem("cartItems")) || []);
-  const [favItems, setFavItems] = useState(
-  JSON.parse(localStorage.getItem("favItems")) || []);
+  // ❤️ My List (BACKEND-DRIVEN)
+  const [myList, setMyList] = useState([]);
 
-// Save to localStorage whenever updated
-  useEffect(() => {
-  localStorage.setItem("cartItems", JSON.stringify(cartItems));}, [cartItems]);
-  useEffect(() => {
-  localStorage.setItem("favItems", JSON.stringify(favItems));}, [favItems]);
-
-//login/signup
+  // Login modal state
   const [showLogin, setShowLogin] = useState(false);
+  const [loginMode, setLoginMode] = useState("signin");
 
-   return (
-    <> <BrowserRouter>
-     <Navbar cartCount={cartCount} 
-      favCount={favCount}
-      cartProducts={cartItems.length} 
-      favProducts={favItems.length}
-      setShowLogin={setShowLogin}/>
+  // 🔄 LOAD MY LIST FROM BACKEND ON LOGIN
+  useEffect(() => {
+    const loadMyList = async () => {
+      if (!isLoggedIn) {
+        setMyList([]);
+        return;
+      }
 
-       {/* Login popup over everything */}
+      try {
+        const data = await fetchMyList();
+        setMyList(data || []);
+      } catch (err) {
+        console.error("Failed to load My List", err);
+        setMyList([]);
+      }
+    };
+
+    loadMyList();
+  }, [isLoggedIn]);
+
+  return (
+    <BrowserRouter>
+      {/* NETFLIX NAVBAR */}
+      <NetflixNavbar
+        myListCount={myList.length}
+        isLoggedIn={isLoggedIn}
+        setIsLoggedIn={setIsLoggedIn}
+        setShowLogin={setShowLogin}
+        setLoginMode={setLoginMode}
+      />
+
+      {/* LOGIN MODAL */}
       {showLogin && (
-        <Login closePopup={() => setShowLogin(false)} />
+        <Login
+          closePopup={() => setShowLogin(false)}
+          isSignUp={loginMode === "signup"}
+          setIsLoggedIn={setIsLoggedIn}
+        />
       )}
 
       {/* ROUTES */}
       <Routes>
         <Route
           path="/"
-          element={
-            <Home
-              cartCount={cartCount}
-              setCartCount={setCartCount}
-              favCount={favCount}
-              setFavCount={setFavCount}
-              cartItems={cartItems}
-              setCartItems={setCartItems}
-              favItems={favItems}
-              setFavItems={setFavItems}
-            />
-          }
+          element={<Home myList={myList} setMyList={setMyList} />}
         />
 
         <Route
-            path="/favourites"
-           element={<Favourite favCount={favCount} favItems={favItems} />}/>
-
-       <Route
-          path="/cart"
-          element={<Cart cartCount={cartCount} cartItems={cartItems} />}/>
-
-        <Route
-        path="/addproduct" element ={<Addproduct />}/>
+          path="/my-list"
+          element={
+            isLoggedIn ? (
+              <MyList myList={myList} setMyList={setMyList} />
+            ) : (
+              <Home myList={myList} setMyList={setMyList} />
+            )
+          }
+        />
       </Routes>
     </BrowserRouter>
-    </>
-  )
-}
+  );
+};
 
-export default App
+export default App;

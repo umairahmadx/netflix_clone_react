@@ -1,106 +1,110 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { loginUser, registerUser } from "./api.js";
 import "./Login.css";
 
-const Login = ({ closePopup }) => {
-  const [isLogin, setIsLogin] = useState(true);
-
-  const[username, setUsername] = useState("");
-  const[email, setEmail] = useState("");
-  const[password, setPassword] = useState("");
+const Login = ({ closePopup, isSignUp = false, setIsLoggedIn }) => {
+  const [isLogin, setIsLogin] = useState(!isSignUp);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  
 
-async function userLogin(e){
-  e.preventDefault();
-  try {
-    const response = await fetch("http://localhost:7000/login",{
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({email,password})
-    });
-    const data = await response.json();
-    console.log(data);
+  // 🔐 LOGIN
+  const userLogin = async (e) => {
+    e.preventDefault();
 
-    if (response.ok) {
-      // save role and any token if returned
-      if (data.role) localStorage.setItem("role", data.role);
-      if (data.token) localStorage.setItem("token", data.token);
+    try {
+      const data = await loginUser({ email, password });
 
-      // close popup (only if prop provided)
-      if (typeof closePopup === "function") closePopup();
+      if (!data.token) {
+        alert(data.message || "Login failed");
+        return;
+      }
 
-      // navigate to home
+      // ✅ Store auth
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      // 🔥 TELL REACT USER IS LOGGED IN
+      setIsLoggedIn(true);
+
+      closePopup();
       navigate("/");
-    } else {
-      alert(data.error || "Login failed");
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong");
     }
-  } catch (err) {
-    console.error("Login error", err);
-    alert("Something went wrong");
-  }
-}
+  };
 
+  // 📝 SIGNUP
+  const userSignup = async (e) => {
+    e.preventDefault();
 
-async function userSignup(e) {
-  e.preventDefault();
+    try {
+      const data = await registerUser({ username, email, password });
 
-  const response = await fetch("http://localhost:7000/signup", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ username, email, password })
-  });
+      if (!data.message) {
+        alert(data.message || "Signup failed");
+        return;
+      }
 
-  const data = await response.json();
+      alert("Account created! Please sign in.");
+      setIsLogin(true);
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong");
+    }
+  };
 
-  if (response.ok) {
-    // ✅ IMPORTANT PART
-    localStorage.setItem("role", "user");
-
-    // initialize counts
-    localStorage.setItem("cartCount", 0);
-    localStorage.setItem("favCount", 0);
-    localStorage.setItem("cartItems", JSON.stringify([]));
-    localStorage.setItem("favItems", JSON.stringify([]));
-
-    closePopup(); // close login popup
-  } else {
-    alert(data.error);
-  }
-}
-
-
-  
   return (
     <div className="popup-overlay">
       <div className="login-popup">
-        {/* CLOSE BUTTON */}
-        <button className="close-btn" onClick={closePopup}>✖</button>
+        <button className="close-btn" onClick={closePopup}>
+          ✖
+        </button>
 
-        {/* HEADING */}
-        <h2>{isLogin ? "Login" : "Sign Up"}</h2>
+        <h2>{isLogin ? "Sign In" : "Sign Up"}</h2>
 
         <form>
           {!isLogin && (
-            <input type="text" placeholder="Full Name" value={username} onChange={(e) => setUsername(e.target.value)}/>
+            <input
+              type="text"
+              placeholder="Full Name"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
           )}
 
-          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-          <button type="submit" className="submit-btn" onClick={isLogin? userLogin : userSignup}>
-            {isLogin ? "Login" : "Create Account"}
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
+          <button
+            className="submit-btn"
+            onClick={isLogin ? userLogin : userSignup}
+          >
+            {isLogin ? "Sign In" : "Create Account"}
           </button>
         </form>
 
         <p className="toggle-text">
-          {isLogin ? "Don't have an account?" : "Already have an account?"}
+          {isLogin ? "New to Netflix?" : "Already have an account?"}
           <span onClick={() => setIsLogin(!isLogin)}>
-            {isLogin ? " Sign Up" : " Login"}
+            {isLogin ? " Sign up now." : " Sign in."}
           </span>
         </p>
       </div>

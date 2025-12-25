@@ -1,0 +1,32 @@
+.movie-row {
+  margin-left: 40px;
+  margin-top: 20px;
+}
+
+.movie-row h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.row-posters {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding-bottom: 20px;
+  padding-right: 40px;
+}
+
+.row-posters::-webkit-scrollbar {
+  height: 8px;
+}
+
+.row-posters::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.row-posters::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}

@@ -1,58 +1,132 @@
-/* Page wrapper */
-.home-container {
+.hero {
+  position: relative;
+  height: 90vh;
+  background-size: cover;
+  background-position: center;
   display: flex;
-  justify-content: center;
-  padding: 40px;
-  background-color: #fafafa;
+  align-items: center;
+  color: #fff; /* ensure text is readable on dark backgrounds */
+  padding: 60px 20px;
+  background-color: #000;
+  overflow: hidden;
+  /* subtle gradient overlay to keep text legible when no background image is set */
+  background-image: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.15));
 }
 
-/* Pale greenish info box */
-.info-box {
-  margin-top: 0;
+/* background image element placed behind content */
+.hero-bg {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  max-width: 1500px;
-  background-color: palegreen;   /* pale green */
-  padding: 28px;
-  border-radius: 14px;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
-  
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0.95;
 }
 
-/* Heading */
-.info-box h2 {
-  margin: 0;
-  font-size: 60px;
-  color: #1a5b1a;
-  font-weight: 700;
-  text-align: center;
+.hero-content {
+  margin-left: 40px;
+  max-width: 520px;
+  z-index: 1; /* ensure content sits above the background image */
 }
 
-/* Description */
-.info-box p {
-  font-size: 18px;
-  margin-top: 10px;
-  color: #333;
-  text-align: center;
+.hero-title {
+  font-size: 3rem;
+  font-weight: 800;
 }
 
-/* Features list */
-.features {
-  margin-top: 18px;
-  margin-left: 350px;
+.hero-description {
+  margin-top: 15px;
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 480px;
+}
+
+.hero-buttons {
+  margin-top: 20px;
   display: flex;
-  gap: 150px;
-  font-size: 16px;
-  font-weight: 500;
-  color: #0f6f0f;
-  
+  gap: 12px;
 }
 
-.home-container {
-  width: 100%;
-  padding: 0;
-  margin: 0;
+.hero-buttons button {
   display: flex;
-  justify-content: center;
-  background-color: #fafafa;
-  
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 100ms ease;
+  min-width: fit-content; /* ensure fixed min-width for button consistency */
+}
+
+.play-btn-hero {
+  background: white;
+  color: black;
+}
+
+.play-btn-hero:hover {
+  background: rgba(255,255,255,0.9);
+}
+
+.list-btn-hero {
+  background: rgba(109,109,110,0.7);
+  color: white;
+  width: auto;
+  overflow: hidden;
+  padding: 10px 18px;
+  transition: background 100ms ease;
+}
+
+.btn-text {
+  display: inline-block;
+  width: 100px;
+  transition: none;
+}
+
+/* Animate text when state changes */
+.list-btn-hero .btn-text {
+  animation: text-pop 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes text-pop {
+  0% {
+    transform: scale(0.5) rotateZ(-180deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1) rotateZ(0deg);
+    opacity: 1;
+  }
+}
+
+.list-btn-hero:hover {
+  background: rgba(109,109,110,0.85);
+}
+
+/* fade gradient at the bottom of the hero */
+.hero-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 150px;
+  pointer-events: none;
+  background-image: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.85));
+}
+
+/* responsive tweaks */
+@media (max-width: 600px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-content {
+    margin-left: 20px;
+  }
 }
