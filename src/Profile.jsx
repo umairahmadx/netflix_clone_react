@@ -11,18 +11,9 @@ const Profile = ({
 }) => {
   if (!visible) return null;
 
-  // 🔐 Get logged-in user (if any)
+  // 🔐 Get logged-in user
   const storedUser = localStorage.getItem("user");
   const user = storedUser ? JSON.parse(storedUser) : null;
-
-  const handleSignOut = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-
-    if (onLogoutClick) onLogoutClick();
-    onClose();
-    window.location.reload(); // simple + effective
-  };
 
   return (
     <div className="profile-modal-backdrop" onClick={onClose}>
@@ -94,7 +85,10 @@ const Profile = ({
               <div className="profile-actions">
                 <button
                   className="action-btn signout-btn"
-                  onClick={handleSignOut}
+                  onClick={() => {
+                    onLogoutClick(); // 🔥 TRIGGER CONFIRM DIALOG
+                    onClose();
+                  }}
                 >
                   🚪 Sign Out
                 </button>
